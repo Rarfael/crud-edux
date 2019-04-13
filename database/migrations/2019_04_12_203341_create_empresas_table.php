@@ -30,8 +30,8 @@ class CreateEmpresasTable extends Migration
             $table->string('segmento');
             $table->text('inscricao_municipal');
             $table->text('incricao_estadual')->nullable();
-
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
