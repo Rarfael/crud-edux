@@ -19,9 +19,9 @@ class CreateEmpresasTable extends Migration
             $table->string('razao_social');
             $table->string('nome_fantasia');
             $table->integer('CEP');
-            $table->integer('logradouro');
+            $table->text('logradouro');
             $table->text('numero');
-            $table->text('telefone', 11);
+            $table->string('telefone', 11);
             $table->string('email');
             $table->text('complemento')->nullable();
             $table->text('bairro');
@@ -29,7 +29,7 @@ class CreateEmpresasTable extends Migration
             $table->string('estado', 2);
             $table->string('segmento');
             $table->text('inscricao_municipal');
-            $table->text('incricao_estadual')->nullable();
+            $table->text('inscricao_estadual')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
