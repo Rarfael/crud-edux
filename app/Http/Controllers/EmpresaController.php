@@ -55,7 +55,7 @@ class EmpresaController extends Controller
      */
     public function show($id)
     {
-        $empresa = $this->empresas->find($id);
+        $empresa = $this->empresas->findOrFail($id);
         return view('empresa.empresa', compact('empresa'));
     }
 
@@ -67,7 +67,8 @@ class EmpresaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $empresa = $this->empresas->findOrFail($id);
+        return view('empresa.update', compact('empresa'));
     }
 
     /**
@@ -77,9 +78,12 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmpresaRequest $request, $id)
     {
-        //
+        $empresa = $this->empresas->findOrFail($id);
+        $empresa->update($request->all());
+        return redirect()->route('edit', $empresa->id)
+                ->with('success','Dados atualizados com sucessso!');
     }
 
     /**

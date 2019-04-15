@@ -31,12 +31,13 @@
                         <td>{{ $empresa->cidade }} - {{ $empresa->estado }}</td>
                         <td>
                             <a href="{{ route('show', $empresa->id) }}">Abrir</a>
+                            <a href="{{ route('edit', $empresa->id) }}">Editar</a>                            
                             <a href="{{ route('destroy', $empresa->id) }}">Deletar</a>                            
                         </td>
                     </tr>
                 @empty
                     <tr class="text-center">
-                        <td colspan="3">Nenhuma empresa cadastrada até o momento.</td>
+                        <td colspan="6">Nenhuma empresa cadastrada até o momento.</td>
                     </tr>
                 @endforelse
                 </tbody>

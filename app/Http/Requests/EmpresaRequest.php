@@ -24,7 +24,7 @@ class EmpresaRequest extends FormRequest
     public function rules()
     {
         return [
-            'CNPJ' => 'required|string|max:14',
+            'CNPJ' => 'required|string|min:14|max:14',
             'razao_social' => 'required|string',
             'nome_fantasia' => 'string',
             'CEP' => 'required|max:8',
