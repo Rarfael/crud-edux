@@ -11,6 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [
+    'as' => 'index',
+    'uses' => 'EmpresaController@index'
+]);
+Route::get('/criar', [
+    'as' => 'create',
+    'uses' => 'EmpresaController@create'
+]);
+Route::get('/{id}', [
+    'as' => 'show',
+    'uses' => 'EmpresaController@show'
+]);
+Route::post('store', [
+    'as' => 'store',
+    'uses' => 'EmpresaController@store'
+]);
+//Route::resource('', 'EmpresaController');
