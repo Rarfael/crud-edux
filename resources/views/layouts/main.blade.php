@@ -6,12 +6,11 @@
     <title>{{ env('APP_NAME') }} - @yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/app.css') }}" />
-    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body>
-
-        <div class="container">
-            @yield('content')
-        </div>
+    <div id="app" class="container">
+        @yield('content')
+    </div>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
