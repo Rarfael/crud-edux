@@ -90,6 +90,9 @@ class EmpresaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $empresa = $this->empresas->findOrFail($id);
+        $empresa->delete();
+        return redirect()->route('index')
+                ->with('success','Empresa deletada!');
     }
 }

@@ -1,8 +1,13 @@
 <div class="box box-solid">
     <div class="pb-3">
         <h3>Empresas Cadastradas</h3>
-        <a class="btn btn-primary btn-send"  href="{{ route('create') }}" > Cadastrar empresa </a>
     </div>
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block">
+        	<button type="button" class="close" data-dismiss="alert">×</button>	
+                <strong>{{ $message }}</strong>
+        </div>
+    @endif
     <div class="box-body">
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -13,7 +18,7 @@
                     <th>email</th>
                     <th>telefone</th>
                     <th>local</th>
-                    <th width="1%"><i>i</i></th>
+                    <th>AÇÕES</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +31,7 @@
                         <td>{{ $empresa->cidade }} - {{ $empresa->estado }}</td>
                         <td>
                             <a href="{{ route('show', $empresa->id) }}">Abrir</a>
+                            <a href="{{ route('destroy', $empresa->id) }}">Deletar</a>                            
                         </td>
                     </tr>
                 @empty
