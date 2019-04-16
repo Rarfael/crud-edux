@@ -1,4 +1,4 @@
-## Back-end API
+## Aplicação
 
 Aplicação monolitica simples utilizando Laravel 5.7, que permite a realização de operações básicas de CRUD
 
