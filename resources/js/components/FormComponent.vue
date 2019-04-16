@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <form method="post" :action="action_url" enctype="multipart/form-data">
     <h2>Empresa</h2>
     <div class="row">
+      <input type="hidden" name="_token" v-model="csfr_token">
       <div class="col-sm-4">
         <div class="form-group">
           <label>Nome Fantasia *</label>
@@ -10,10 +11,12 @@
             name="nome_fantasia"
             v-model="nome_fantasia"
             class="form-control"
-            placeholder="Nomda da Empresa"
+            v-bind:class="{ 'is-invalid': $v.nome_fantasia.$dirty && $v.nome_fantasia.$invalid }"
+            @change="$v.nome_fantasia.$touch()"
+            placeholder="Nome da Empresa"
             required="required"
           >
-          <div v-if="error" class="alert alert-danger">{{ error }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -23,10 +26,14 @@
             type="text"
             name="CNPJ"
             class="form-control"
+            :class="{ 'is-invalid': $v.cnpj.$dirty && $v.cnpj.$invalid }"
+            @change="$v.cnpj.$touch()"
             v-model="cnpj"
             placeholder="Ex: 12345678912345"
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">
+            <p v-if="!$v.cnpj.$required">Campo obrigatório. Ou formato incorreto</p>
+          </div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -37,9 +44,11 @@
             name="razao_social"
             v-model="razao_social"
             class="form-control"
+            :class="{ 'is-invalid': $v.razao_social.$dirty && $v.razao_social.$invalid }"
+            @change="$v.razao_social.$touch()"
             placeholder="Razão Social"
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
     </div>
@@ -47,12 +56,18 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label>Segmento</label>
-          <select name="segmento" class="form-control" v-model="segmento">
+          <select
+            name="segmento"
+            class="form-control"
+            :class="{ 'is-invalid': $v.segmento.$dirty && $v.segmento.$invalid }"
+            @change="$v.segmento.$touch()"
+            v-model="segmento"
+          >
             <option>Produto</option>
             <option>Serviço</option>
             <option>Produto e Serviço</option>
           </select>
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -63,11 +78,13 @@
             name="inscricao_estadual"
             v-model="inscricao_estadual"
             class="form-control"
+            :class="{ 'is-invalid': $v.inscricao_estadual.$dirty && $v.inscricao_estadual.$invalid }"
+            @change="$v.inscricao_estadual.$touch()"
             placeholder="Inscrição estadual *"
             required="required"
             data-error="Valid email is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -80,7 +97,6 @@
             class="form-control"
             placeholder="Inscrição municipal"
           >
-          <div class="alert alert-danger">{{ }}</div>
         </div>
       </div>
     </div>
@@ -95,11 +111,13 @@
             name="telefone"
             v-model="telefone"
             class="form-control"
+            :class="{ 'is-invalid': $v.telefone.$dirty && $v.telefone.$invalid }"
+            @change="$v.telefone.$touch()"
             placeholder="Por favor escrava o numero de telefone"
             required="required"
             data-error="name is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
     </div>
@@ -112,11 +130,13 @@
             name="email"
             v-model="email"
             class="form-control"
+            :class="{ 'is-invalid': $v.email.$dirty && $v.email.$invalid }"
+            @change="$v.email.$touch()"
             placeholder="Por favor digite o e-mail"
             required="required"
             data-error="name is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
     </div>
@@ -131,11 +151,13 @@
             name="CEP"
             v-model="cep"
             class="form-control"
+            :class="{ 'is-invalid': $v.cep.$dirty && $v.cep.$invalid }"
+            @change="$v.cep.$touch()"
             placeholder="Por favor digite o cep"
             required="required"
             data-error="name is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -146,11 +168,13 @@
             name="cidade"
             v-model="cidade"
             class="form-control"
+            :class="{ 'is-invalid': $v.cidade.$dirty && $v.cidade.$invalid }"
+            @change="$v.cidade.$touch()"
             placeholder="Por favor informe a cidade *"
             required="required"
             data-error="Valid email is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -161,9 +185,11 @@
             name="estado"
             v-model="estado"
             class="form-control"
+            :class="{ 'is-invalid': $v.estado.$dirty && $v.estado.$invalid }"
+            @change="$v.estado.$touch()"
             placeholder="Por favor informe o estado"
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
     </div>
@@ -176,10 +202,12 @@
             name="logradouro"
             v-model="logradouro"
             class="form-control"
+            :class="{ 'is-invalid': $v.logradouro.$dirty && $v.logradouro.$invalid }"
+            @change="$v.logradouro.$touch()"
             placeholder="Logradouro"
             required="required"
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -190,11 +218,13 @@
             name="bairro"
             v-model="bairro"
             class="form-control"
+            :class="{ 'is-invalid': $v.bairro.$dirty && $v.bairro.$invalid }"
+            @change="$v.bairro.$touch()"
             placeholder="Bairro"
             required="required"
             data-error="Valid email is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -207,7 +237,6 @@
             class="form-control"
             placeholder="Complemento"
           >
-          <div class="alert alert-danger">{{ }}</div>
         </div>
       </div>
     </div>
@@ -220,18 +249,38 @@
             name="numero"
             v-model="numero"
             class="form-control"
+            :class="{ 'is-invalid': $v.numero.$dirty && $v.numero.$invalid }"
+            @change="$v.numero.$touch()"
             placeholder="numero"
             required="required"
             data-error="name is required."
           >
-          <div class="alert alert-danger">{{ }}</div>
+          <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="col-md-6">
+        <button v-if="action === 'store'" type="sybmit" class="btn btn-primary btn-send">Cadastrar</button>
+        <div v-if="action === 'update'">
+          <button type="sybmit" class="btn btn-success btn-send">Salvar</button>
+          <a class="btn btn-danger btn-send" :href="delete_route">Deletar</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p class="text-muted">
+          <strong>*</strong> These fields are required.
+        </p>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script>
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
+
 export default {
   props: [
     "cnpj",
@@ -249,10 +298,64 @@ export default {
     "segmento",
     "inscricao_municipal",
     "inscricao_estadual",
-    "error"
+    "error",
+    "action",
+    "action_url",
+    "errors",
+    "csfr_token",
+    "delete_route"
   ],
+  validations: {
+    cnpj: {
+      required,
+      minLength: minLength(14),
+      maxLength: maxLength(14)
+    },
+    razao_social: {
+      required
+    },
+    nome_fantasia: {
+      required
+    },
+    cep: {
+      required,
+      minLength: minLength(8),
+      maxLength: maxLength(8)
+    },
+    logradouro: {
+      required
+    },
+    numero: {
+      required
+    },
+    telefone: {
+      required,
+      minLength: minLength(10),
+      maxLength: maxLength(11)
+    },
+    email: {
+      required
+    },
+    bairro: {
+      required
+    },
+    cidade: {
+      required
+    },
+    estado: {
+      required,
+      minLength: minLength(2),
+      maxLength: maxLength(2)
+    },
+    segmento: {
+      required
+    },
+    inscricao_estadual: {
+      required
+    }
+  },
   mounted() {
-    console.log(console.log(this.errors));
+    console.log(this.action);
   }
 };
 </script>
