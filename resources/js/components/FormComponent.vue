@@ -29,7 +29,6 @@
             :class="{ 'is-invalid': $v.company.cnpj.$dirty && $v.company.cnpj.$invalid }"
             @change="$v.company.cnpj.$touch()"
             v-model="company.cnpj"
-            v-mask="['##.###.###/####-##']"
             placeholder="Ex: 12345678912345"
           >
           <div class="invalid-feedback">
@@ -379,9 +378,6 @@ export default {
         this.$el.submit();
       }
     }
-  },
-  mounted() {
-    console.log(this.action);
   }
 };
 </script>

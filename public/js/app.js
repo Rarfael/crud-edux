@@ -2038,7 +2038,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["cnpj", "razao_social", "nome_fantasia", "cep", "logradouro", "numero", "telefone", "email", "complemento", "bairro", "cidade", "estado", "segmento", "inscricao_municipal", "inscricao_estadual", "error", "action", "action_url", "errors", "csfr_token", "delete_route"],
@@ -2122,9 +2121,6 @@ __webpack_require__.r(__webpack_exports__);
         this.$el.submit();
       }
     }
-  },
-  mounted: function mounted() {
-    console.log(this.action);
   }
 });
 
@@ -37515,12 +37511,6 @@ var render = function() {
                   rawName: "v-model",
                   value: _vm.company.cnpj,
                   expression: "company.cnpj"
-                },
-                {
-                  name: "mask",
-                  rawName: "v-mask",
-                  value: ["##.###.###/####-##"],
-                  expression: "['##.###.###/####-##']"
                 }
               ],
               staticClass: "form-control",

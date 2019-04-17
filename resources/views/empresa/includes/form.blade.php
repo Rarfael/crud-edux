@@ -8,6 +8,8 @@
     </div>
     @endif
 
+
+    @if ($errors->has('nome_fantasia')) error="{{ $errors->first('nome_fantasia') }}" @endif
     @if ($errors->has('CNPJ'))<div class="alert alert-danger">{{ $errors->first('CNPJ') }}</div> @endif
     @if ($errors->has('razao_social'))<div class="alert alert-danger">{{ $errors->first('razao_social') }}</div> @endif
     @if ($errors->has('segmento'))<div class="alert alert-danger">{{ $errors->first('segmento') }}</div> @endif
@@ -42,6 +44,5 @@
                     action="{{ empty($empresa) ? 'store' : 'update' }}" 
                     action_url="{{ !empty($empresa) ? route('update', $empresa->id) : route('store') }}"
                     csfr_token= "{{ csrf_token() }}"
-                    delete_route="{{ empty($empresa) ? 'store' : route('destroy', $empresa->id) }}"
-                    @if ($errors->has('nome_fantasia')) error="{{ $errors->first('nome_fantasia') }}" @endif></form-component>
+                    delete_route="{{ empty($empresa) ? 'store' : route('destroy', $empresa->id) }}"></form-component>
 </section>

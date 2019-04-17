@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\EmpresaRequest;
-use App\Empresa;
+use App\Repositories\Contracts\EmpresaRepositoryInterface;
 
 class EmpresaController extends Controller
 {
     protected $empresas = null;
 
-    public function __construct(Empresa $empresas) {
+    public function __construct(EmpresaRepositoryInterface $empresas) {
         $this->empresas = $empresas;
     }
     /**
@@ -55,7 +55,7 @@ class EmpresaController extends Controller
      */
     public function show($id)
     {
-        $empresa = $this->empresas->findOrFail($id);
+        $empresa = $this->empresas->get($id);
         return view('empresa.empresa', compact('empresa'));
     }
 
@@ -67,7 +67,7 @@ class EmpresaController extends Controller
      */
     public function edit($id)
     {
-        $empresa = $this->empresas->findOrFail($id);
+        $empresa = $this->empresas->get($id);
         return view('empresa.update', compact('empresa'));
     }
 
@@ -80,9 +80,8 @@ class EmpresaController extends Controller
      */
     public function update(EmpresaRequest $request, $id)
     {
-        $empresa = $this->empresas->findOrFail($id);
-        $empresa->update($request->all());
-        return redirect()->route('edit', $empresa->id)
+        $this->empresas->update($id, $request->all());
+        return redirect()->route('edit', $id)
                 ->with('success','Dados atualizados com sucessso!');
     }
 
@@ -94,7 +93,7 @@ class EmpresaController extends Controller
      */
     public function destroy($id)
     {
-        $empresa = $this->empresas->findOrFail($id);
+        $empresa = $this->empresas->get($id);
         $empresa->delete();
         return redirect()->route('index')
                 ->with('success','Empresa deletada!');
