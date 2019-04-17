@@ -30,7 +30,7 @@ class EmpresaRepository implements EmpresaRepositoryInterface
      */
     public function all()
     {
-        return $empresas = $this->empresas->all();
+        return $this->empresas->all();
     }
 
     /**
@@ -40,7 +40,8 @@ class EmpresaRepository implements EmpresaRepositoryInterface
      */
     public function create($empresa)
     {
-        $this->empresas->create($empresa);
+        $empresa['CNPJ'] = $this->trimCNPJ($empresa['CNPJ']);
+        return $this->empresas->create($empresa);
     }
     /**
      * Deletes a empresa.
@@ -60,6 +61,17 @@ class EmpresaRepository implements EmpresaRepositoryInterface
     public function update($empresa_id, $empresa_data)
     {
         $empresa = $this->empresas->findOrFail($empresa_id);
+        $empresa_data['CNPJ'] = $this->trimCNPJ($empresa_data['CNPJ']);
         return $empresa->update($empresa_data);
+    }
+
+    public function searchCNPJ($cnpj)
+    {
+
+    }
+
+    private function trimCNPJ($cnpj)
+    {
+        return str_replace(['-', '/', '.'], '', $cnpj); 
     }
 }

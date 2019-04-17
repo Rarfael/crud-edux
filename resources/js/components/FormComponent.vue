@@ -29,6 +29,7 @@
             :class="{ 'is-invalid': $v.company.cnpj.$dirty && $v.company.cnpj.$invalid }"
             @change="$v.company.cnpj.$touch()"
             v-model="company.cnpj"
+            v-mask="['##.###.###/####-##']"
             placeholder="Ex: 12345678912345"
           >
           <div class="invalid-feedback">
@@ -323,8 +324,8 @@ export default {
     company: {
       cnpj: {
         required,
-        minLength: minLength(14),
-        maxLength: maxLength(14)
+        minLength: minLength(18),
+        maxLength: maxLength(18)
       },
       razao_social: {
         required

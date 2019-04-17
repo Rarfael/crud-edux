@@ -3,9 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
+use App\Repositories\Contracts\EmpresaRepositoryInterface;
 
 class EmpresaRequest extends FormRequest
 {
+    protected $empresas = null;
+
+    public function __construct(EmpresaRepositoryInterface $empresas) {
+        $this->empresas = $empresas;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +32,8 @@ class EmpresaRequest extends FormRequest
     public function rules()
     {
         return [
-            'CNPJ' => 'required|string|min:14|max:14',
+            'id' =>'',
+            'CNPJ' => 'required|string|cnpj',
             'razao_social' => 'required|string',
             'nome_fantasia' => 'string',
             'CEP' => 'required|max:8',

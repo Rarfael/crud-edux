@@ -2038,6 +2038,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["cnpj", "razao_social", "nome_fantasia", "cep", "logradouro", "numero", "telefone", "email", "complemento", "bairro", "cidade", "estado", "segmento", "inscricao_municipal", "inscricao_estadual", "error", "action", "action_url", "errors", "csfr_token", "delete_route"],
@@ -2066,8 +2067,8 @@ __webpack_require__.r(__webpack_exports__);
     company: {
       cnpj: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
-        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(14),
-        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(14)
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(18),
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["maxLength"])(18)
       },
       razao_social: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"]
@@ -37511,6 +37512,12 @@ var render = function() {
                   rawName: "v-model",
                   value: _vm.company.cnpj,
                   expression: "company.cnpj"
+                },
+                {
+                  name: "mask",
+                  rawName: "v-mask",
+                  value: ["##.###.###/####-##"],
+                  expression: "['##.###.###/####-##']"
                 }
               ],
               staticClass: "form-control",
