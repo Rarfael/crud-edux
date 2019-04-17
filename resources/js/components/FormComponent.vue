@@ -1,18 +1,18 @@
 <template>
-  <form method="post" :action="action_url" enctype="multipart/form-data">
+  <form method="post" @submit.prevent="submit" :action="action_url" enctype="multipart/form-data">
     <h2>Empresa</h2>
     <div class="row">
       <input type="hidden" name="_token" v-model="csfr_token">
       <div class="col-sm-4">
         <div class="form-group">
-          <label>Nome Fantasia *</label>
+          <label>Nome Fantasia</label>
           <input
             type="text"
             name="nome_fantasia"
-            v-model="nome_fantasia"
+            v-model="company.nome_fantasia"
             class="form-control"
-            v-bind:class="{ 'is-invalid': $v.nome_fantasia.$dirty && $v.nome_fantasia.$invalid }"
-            @change="$v.nome_fantasia.$touch()"
+            v-bind:class="{ 'is-invalid': $v.company.nome_fantasia.$dirty && $v.company.nome_fantasia.$invalid }"
+            @change="$v.company.nome_fantasia.$touch()"
             placeholder="Nome da Empresa"
             required="required"
           >
@@ -26,13 +26,15 @@
             type="text"
             name="CNPJ"
             class="form-control"
-            :class="{ 'is-invalid': $v.cnpj.$dirty && $v.cnpj.$invalid }"
-            @change="$v.cnpj.$touch()"
-            v-model="cnpj"
+            :class="{ 'is-invalid': $v.company.cnpj.$dirty && $v.company.cnpj.$invalid }"
+            @change="$v.company.cnpj.$touch()"
+            v-model="company.cnpj"
+            v-mask="['##.###.###/####-##']"
             placeholder="Ex: 12345678912345"
           >
           <div class="invalid-feedback">
-            <p v-if="!$v.cnpj.$required">Campo obrigatório. Ou formato incorreto</p>
+            <p v-if="!$v.company.cnpj.required">Campo obrigatório.</p>
+            <p v-if="!$v.company.cnpj.minLength && !$v.company.cnpj.maxLength">Formato incorreto</p>
           </div>
         </div>
       </div>
@@ -42,10 +44,10 @@
           <input
             type="text"
             name="razao_social"
-            v-model="razao_social"
+            v-model="company.razao_social"
             class="form-control"
-            :class="{ 'is-invalid': $v.razao_social.$dirty && $v.razao_social.$invalid }"
-            @change="$v.razao_social.$touch()"
+            :class="{ 'is-invalid': $v.company.razao_social.$dirty && $v.company.razao_social.$invalid }"
+            @change="$v.company.razao_social.$touch()"
             placeholder="Razão Social"
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
@@ -59,9 +61,9 @@
           <select
             name="segmento"
             class="form-control"
-            :class="{ 'is-invalid': $v.segmento.$dirty && $v.segmento.$invalid }"
-            @change="$v.segmento.$touch()"
-            v-model="segmento"
+            :class="{ 'is-invalid': $v.company.segmento.$dirty && $v.company.segmento.$invalid }"
+            @change="$v.company.segmento.$touch()"
+            v-model="company.segmento"
           >
             <option>Produto</option>
             <option>Serviço</option>
@@ -76,13 +78,12 @@
           <input
             type="text"
             name="inscricao_estadual"
-            v-model="inscricao_estadual"
+            v-model="company.inscricao_estadual"
             class="form-control"
-            :class="{ 'is-invalid': $v.inscricao_estadual.$dirty && $v.inscricao_estadual.$invalid }"
-            @change="$v.inscricao_estadual.$touch()"
+            :class="{ 'is-invalid': $v.company.inscricao_estadual.$dirty && $v.company.inscricao_estadual.$invalid }"
+            @change="$v.company.inscricao_estadual.$touch()"
             placeholder="Inscrição estadual *"
             required="required"
-            data-error="Valid email is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
@@ -93,7 +94,7 @@
           <input
             type="text"
             name="inscricao_municipal"
-            v-model="inscricao_municipal"
+            v-model="company.inscricao_municipal"
             class="form-control"
             placeholder="Inscrição municipal"
           >
@@ -109,13 +110,12 @@
           <input
             type="tel"
             name="telefone"
-            v-model="telefone"
+            v-model="company.telefone"
             class="form-control"
-            :class="{ 'is-invalid': $v.telefone.$dirty && $v.telefone.$invalid }"
-            @change="$v.telefone.$touch()"
+            :class="{ 'is-invalid': $v.company.telefone.$dirty && $v.company.telefone.$invalid }"
+            @change="$v.company.telefone.$touch()"
             placeholder="Por favor escrava o numero de telefone"
             required="required"
-            data-error="name is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
@@ -128,13 +128,12 @@
           <input
             type="email"
             name="email"
-            v-model="email"
+            v-model="company.email"
             class="form-control"
-            :class="{ 'is-invalid': $v.email.$dirty && $v.email.$invalid }"
-            @change="$v.email.$touch()"
+            :class="{ 'is-invalid': $v.company.email.$dirty && $v.company.email.$invalid }"
+            @change="$v.company.email.$touch()"
             placeholder="Por favor digite o e-mail"
             required="required"
-            data-error="name is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
@@ -149,13 +148,12 @@
           <input
             type="number"
             name="CEP"
-            v-model="cep"
+            v-model="company.cep"
             class="form-control"
-            :class="{ 'is-invalid': $v.cep.$dirty && $v.cep.$invalid }"
-            @change="$v.cep.$touch()"
+            :class="{ 'is-invalid': $v.company.cep.$dirty && $v.company.cep.$invalid }"
+            @change="$v.company.cep.$touch()"
             placeholder="Por favor digite o cep"
             required="required"
-            data-error="name is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
@@ -166,13 +164,12 @@
           <input
             type="text"
             name="cidade"
-            v-model="cidade"
+            v-model="company.cidade"
             class="form-control"
-            :class="{ 'is-invalid': $v.cidade.$dirty && $v.cidade.$invalid }"
-            @change="$v.cidade.$touch()"
+            :class="{ 'is-invalid': $v.company.cidade.$dirty && $v.company.cidade.$invalid }"
+            @change="$v.company.cidade.$touch()"
             placeholder="Por favor informe a cidade *"
             required="required"
-            data-error="Valid email is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
@@ -183,10 +180,10 @@
           <input
             type="text"
             name="estado"
-            v-model="estado"
+            v-model="company.estado"
             class="form-control"
-            :class="{ 'is-invalid': $v.estado.$dirty && $v.estado.$invalid }"
-            @change="$v.estado.$touch()"
+            :class="{ 'is-invalid': $v.company.estado.$dirty && $v.company.estado.$invalid }"
+            @change="$v.company.estado.$touch()"
             placeholder="Por favor informe o estado"
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
@@ -200,10 +197,10 @@
           <input
             type="text"
             name="logradouro"
-            v-model="logradouro"
+            v-model="company.logradouro"
             class="form-control"
-            :class="{ 'is-invalid': $v.logradouro.$dirty && $v.logradouro.$invalid }"
-            @change="$v.logradouro.$touch()"
+            :class="{ 'is-invalid': $v.company.logradouro.$dirty && $v.company.logradouro.$invalid }"
+            @change="$v.company.logradouro.$touch()"
             placeholder="Logradouro"
             required="required"
           >
@@ -216,24 +213,23 @@
           <input
             type="text"
             name="bairro"
-            v-model="bairro"
+            v-model="company.bairro"
             class="form-control"
-            :class="{ 'is-invalid': $v.bairro.$dirty && $v.bairro.$invalid }"
-            @change="$v.bairro.$touch()"
+            :class="{ 'is-invalid': $v.company.bairro.$dirty && $v.company.bairro.$invalid }"
+            @change="$v.company.bairro.$touch()"
             placeholder="Bairro"
             required="required"
-            data-error="Valid email is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
       </div>
       <div class="col-sm-4">
         <div class="form-group">
-          <label>Complemento *</label>
+          <label>Complemento</label>
           <input
             type="text"
             name="complemento"
-            v-model="complemento"
+            v-model="company.complemento"
             class="form-control"
             placeholder="Complemento"
           >
@@ -247,13 +243,11 @@
           <input
             type="text"
             name="numero"
-            v-model="numero"
+            v-model="company.numero"
             class="form-control"
-            :class="{ 'is-invalid': $v.numero.$dirty && $v.numero.$invalid }"
-            @change="$v.numero.$touch()"
+            :class="{ 'is-invalid': $v.company.numero.$dirty && $v.company.numero.$invalid }"
+            @change="$v.company.numero.$touch()"
             placeholder="numero"
-            required="required"
-            data-error="name is required."
           >
           <div class="invalid-feedback">Campo obrigatório.</div>
         </div>
@@ -271,7 +265,7 @@
     <div class="row">
       <div class="col-md-12">
         <p class="text-muted">
-          <strong>*</strong> These fields are required.
+          <strong>*</strong> Campos obrigatórios.
         </p>
       </div>
     </div>
@@ -305,53 +299,85 @@ export default {
     "csfr_token",
     "delete_route"
   ],
+  data: function() {
+    return {
+      company: {
+        cnpj: this.cnpj,
+        razao_social: this.razao_social,
+        nome_fantasia: this.nome_fantasia,
+        cep: this.cep,
+        logradouro: this.logradouro,
+        numero: this.numero,
+        telefone: this.telefone,
+        email: this.email,
+        complemento: this.complemento,
+        bairro: this.bairro,
+        cidade: this.cidade,
+        estado: this.estado,
+        segmento: this.segmento,
+        inscricao_municipal: this.inscricao_municipal,
+        inscricao_estadual: this.inscricao_estadual
+      }
+    };
+  },
   validations: {
-    cnpj: {
-      required,
-      minLength: minLength(14),
-      maxLength: maxLength(14)
-    },
-    razao_social: {
-      required
-    },
-    nome_fantasia: {
-      required
-    },
-    cep: {
-      required,
-      minLength: minLength(8),
-      maxLength: maxLength(8)
-    },
-    logradouro: {
-      required
-    },
-    numero: {
-      required
-    },
-    telefone: {
-      required,
-      minLength: minLength(10),
-      maxLength: maxLength(11)
-    },
-    email: {
-      required
-    },
-    bairro: {
-      required
-    },
-    cidade: {
-      required
-    },
-    estado: {
-      required,
-      minLength: minLength(2),
-      maxLength: maxLength(2)
-    },
-    segmento: {
-      required
-    },
-    inscricao_estadual: {
-      required
+    company: {
+      cnpj: {
+        required,
+        minLength: minLength(14),
+        maxLength: maxLength(14)
+      },
+      razao_social: {
+        required
+      },
+      nome_fantasia: {
+        required
+      },
+      cep: {
+        required,
+        minLength: minLength(8),
+        maxLength: maxLength(8)
+      },
+      logradouro: {
+        required
+      },
+      numero: {
+        required
+      },
+      telefone: {
+        required,
+        minLength: minLength(10),
+        maxLength: maxLength(11)
+      },
+      email: {
+        required
+      },
+      bairro: {
+        required
+      },
+      cidade: {
+        required
+      },
+      estado: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(2)
+      },
+      segmento: {
+        required
+      },
+      inscricao_estadual: {
+        required
+      }
+    }
+  },
+  methods: {
+    submit(e) {
+      if (this.$v.$invalid) {
+        alert("Por favor preencha o formulário corretamente");
+      } else {
+        this.$el.submit();
+      }
     }
   },
   mounted() {

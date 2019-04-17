@@ -9,6 +9,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import Vuelidate from 'vuelidate'
+import VueTheMask from 'vue-the-mask'
+
+Vue.use(VueTheMask)
 Vue.use(Vuelidate)
 
 /**
