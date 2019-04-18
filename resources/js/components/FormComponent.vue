@@ -152,6 +152,7 @@
             class="form-control"
             :class="{ 'is-invalid': $v.company.cep.$dirty && $v.company.cep.$invalid }"
             @change="$v.company.cep.$touch()"
+            @keyup="searchCEP(company.cep)"
             placeholder="Por favor digite o cep"
             required="required"
           >
@@ -177,16 +178,15 @@
       <div class="col-sm-4">
         <div class="form-group">
           <label>Estado *</label>
-          <input
-            type="text"
-            name="estado"
-            v-model="company.estado"
-            class="form-control"
+          <select
             :class="{ 'is-invalid': $v.company.estado.$dirty && $v.company.estado.$invalid }"
             @change="$v.company.estado.$touch()"
-            placeholder="Por favor informe o estado"
+            class="form-control"
+            v-model="company.estado"
+            name="estado"
           >
-          <div class="invalid-feedback">Campo obrigatório.</div>
+            <option v-for="(uf, index) in estados" :key="index" :value="uf">{{ uf }}</option>
+          </select>
         </div>
       </div>
     </div>
@@ -317,7 +317,36 @@ export default {
         segmento: this.segmento,
         inscricao_municipal: this.inscricao_municipal,
         inscricao_estadual: this.inscricao_estadual
-      }
+      },
+      estados: [
+        "AC",
+        "AL",
+        "AP",
+        "AM",
+        "BA",
+        "CE",
+        "DF",
+        "ES",
+        "GO",
+        "MA",
+        "MT",
+        "MS",
+        "MG",
+        "PA",
+        "PB",
+        "PR",
+        "PE",
+        "PI",
+        "RJ",
+        "RN",
+        "RS",
+        "RO",
+        "RR",
+        "SC",
+        "SP",
+        "SE",
+        "TO"
+      ]
     };
   },
   validations: {
@@ -377,6 +406,23 @@ export default {
         alert("Por favor preencha o formulário corretamente");
       } else {
         this.$el.submit();
+      }
+    },
+    searchCEP(cep) {
+      if (cep.length === 8) {
+        console.log(cep);
+        fetch("http://viacep.com.br/ws/" + this.company.cep + "/json/")
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+            this.company.bairro = result.bairro;
+            this.company.logradouro = result.logradouro;
+            this.company.estado = result.uf;
+            this.company.cidade = result.localidade;
+          })
+          .catch(err => {
+            console.error(err);
+          });
       }
     }
   }

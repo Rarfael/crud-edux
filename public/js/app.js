@@ -2060,7 +2060,8 @@ __webpack_require__.r(__webpack_exports__);
         segmento: this.segmento,
         inscricao_municipal: this.inscricao_municipal,
         inscricao_estadual: this.inscricao_estadual
-      }
+      },
+      estados: ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
     };
   },
   validations: {
@@ -2120,6 +2121,24 @@ __webpack_require__.r(__webpack_exports__);
         alert("Por favor preencha o formulário corretamente");
       } else {
         this.$el.submit();
+      }
+    },
+    searchCEP: function searchCEP(cep) {
+      var _this = this;
+
+      if (cep.length === 8) {
+        console.log(cep);
+        fetch("http://viacep.com.br/ws/" + this.company.cep + "/json/").then(function (response) {
+          return response.json();
+        }).then(function (result) {
+          console.log(result);
+          _this.company.bairro = result.bairro;
+          _this.company.logradouro = result.logradouro;
+          _this.company.estado = result.uf;
+          _this.company.cidade = result.localidade;
+        })["catch"](function (err) {
+          console.error(err);
+        });
       }
     }
   }
@@ -37877,6 +37896,9 @@ var render = function() {
                 change: function($event) {
                   return _vm.$v.company.cep.$touch()
                 },
+                keyup: function($event) {
+                  return _vm.searchCEP(_vm.company.cep)
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -37940,42 +37962,56 @@ var render = function() {
           _c("div", { staticClass: "form-group" }, [
             _c("label", [_vm._v("Estado *")]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.company.estado,
-                  expression: "company.estado"
-                }
-              ],
-              staticClass: "form-control",
-              class: {
-                "is-invalid":
-                  _vm.$v.company.estado.$dirty && _vm.$v.company.estado.$invalid
-              },
-              attrs: {
-                type: "text",
-                name: "estado",
-                placeholder: "Por favor informe o estado"
-              },
-              domProps: { value: _vm.company.estado },
-              on: {
-                change: function($event) {
-                  return _vm.$v.company.estado.$touch()
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.company.estado,
+                    expression: "company.estado"
                   }
-                  _vm.$set(_vm.company, "estado", $event.target.value)
+                ],
+                staticClass: "form-control",
+                class: {
+                  "is-invalid":
+                    _vm.$v.company.estado.$dirty &&
+                    _vm.$v.company.estado.$invalid
+                },
+                attrs: { name: "estado" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.company,
+                        "estado",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    },
+                    function($event) {
+                      return _vm.$v.company.estado.$touch()
+                    }
+                  ]
                 }
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "invalid-feedback" }, [
-              _vm._v("Campo obrigatório.")
-            ])
+              },
+              _vm._l(_vm.estados, function(uf, index) {
+                return _c("option", { key: index, domProps: { value: uf } }, [
+                  _vm._v(_vm._s(uf))
+                ])
+              }),
+              0
+            )
           ])
         ])
       ]),

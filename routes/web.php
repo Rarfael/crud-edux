@@ -39,4 +39,3 @@ Route::get('deletar/{id}', [
     'as' => 'destroy',
     'uses' => 'EmpresaController@destroy'
 ]);
-//Route::resource('', 'EmpresaController');
