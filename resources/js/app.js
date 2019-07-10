@@ -4,15 +4,15 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
-import Vuelidate from 'vuelidate'
-import VueTheMask from 'vue-the-mask'
+import Vuelidate from "vuelidate";
+import VueTheMask from "vue-the-mask";
 
-Vue.use(VueTheMask)
-Vue.use(Vuelidate)
+Vue.use(VueTheMask);
+Vue.use(Vuelidate);
 
 /**
  * The following block of code may be used to automatically register your
@@ -25,7 +25,22 @@ Vue.use(Vuelidate)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('form-component', require('./components/FormComponent.vue').default);
+Vue.component(
+    "form-component",
+    require("./components/FormComponent.vue").default
+);
+Vue.component(
+    "authorized-clients",
+    require("./components/passport/AuthorizedClients.vue").default
+);
+Vue.component(
+    "clients-component",
+    require("./components/passport/Clients.vue").default
+);
+Vue.component(
+    "personal-access-tokens",
+    require("./components/passport/PersonalAccessTokens.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -34,5 +49,5 @@ Vue.component('form-component', require('./components/FormComponent.vue').defaul
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app"
 });
